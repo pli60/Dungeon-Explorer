@@ -1,4 +1,4 @@
 # Dungeon-Explorer
 CMPM147 Final Project
 
-Hello
+By: Pengfei Li, Laihong Xu
