@@ -1,2 +1,5 @@
 7/12 
 add array that manage all rooms' coordinates and dimension
+
+7/13
+Added grass, water, road assets.
