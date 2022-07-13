@@ -1,9 +1,9 @@
-// in function BSPNode.prototype.generateRoom
-//  rooms data will be pushed into array "rooms"
+// Note change function code 
 
 
 var canvas_width = 1280;            // canvas w and h
 var canvas_height = 720;
+
 var minSize = canvas_width / 1;     // used to determine the min size of each room 
 var maxSplitLevel = 10;             // height of the BSP tree, determine the variety of the rooms
 
@@ -58,6 +58,10 @@ function setup() {
 }
 
 
+function draw(){
+  //run 60 times per second
+}
+
 //function 
 //  print out data for debugging
 function printRoomData() {
@@ -86,6 +90,7 @@ function generateDungeon(maxSplitLevel, minRoomSize) {
     y: height
   };
 
+  //root (parent)  - child  
   var dungeon = new BSPNode(null, startPoint, endPoint); // initialize dungeon
 
   dungeon.splitAll(minRoomSize, maxSplitLevel, 0); // start spliting process
@@ -118,6 +123,7 @@ function BSPNode(parentNode, startPoint, endPoint) {
 //function
 //  used to make road between every nodes and there parents
 BSPNode.prototype.connectRooms = function () {
+
   if (this.rightNode) {
     this.rightNode.connectRooms();
   }
@@ -152,6 +158,7 @@ BSPNode.prototype.generateRoom = function () {
     //print("dx, dy: " + dx.toFixed() + ", " + dy.toFixed());
     var roomW = dx - random(dx / 8, dx / 2); // arbitrary      dx * 1/2   to   dx * 7/8    
     var roomH = dy - random(dy / 8, dy / 2); // arbitrary      same here
+
 
 
 
