@@ -1,0 +1,2 @@
+7/12 
+add array that manage all rooms' coordinates and dimension
