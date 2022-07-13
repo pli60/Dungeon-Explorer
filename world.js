@@ -1,5 +1,9 @@
 // Note change function code 
 
+//tile variables
+let water;
+let road;
+let grass;
 
 var canvas_width = 1280;            // canvas w and h
 var canvas_height = 720;
@@ -25,6 +29,14 @@ var rooms = new Array();             // create array
       start_x, start_y are the starting point of 
       room_width, room_height are the dimension of the room
 */
+
+function preload(){
+  // water = loadImage('Water.jpg');
+  // road = loadImage('Road.jpg');
+  // grass = loadImage('Grass.jpg');
+
+}
+
 function array_addRoom(room_ID, start_x, start_y, room_width, room_height) {
   this.room_ID = room_ID;
   this.start_x = start_x;
@@ -39,6 +51,13 @@ function array_addRoom(room_ID, start_x, start_y, room_width, room_height) {
 function setup() {
 
   createCanvas(canvas_width, canvas_height);
+
+  water = loadImage('Water.jpg');
+  road = loadImage('Road.jpg');
+  grass = loadImage('Grass.jpg');
+  // water.loadPixels();
+  // road.loadPixels();
+  // grass.loadPixels();
 
   background(0);
 
@@ -60,6 +79,7 @@ function setup() {
 
 function draw(){
   //run 60 times per second
+  image(water, 0, 0);
 }
 
 //function 
@@ -183,6 +203,8 @@ BSPNode.prototype.generateRoom = function () {
     ellipseMode(CORNER);
     fill("red");
     ellipse(x + roomW / 4, y + roomH / 4, roomW / 2, roomH / 2);
+
+    // image(water, x, y, 32, 32);
 
     // save room specs (not yet used for anything :P)
     this.roomX = x;
