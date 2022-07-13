@@ -1,3 +1,5 @@
+// in function BSPNode.prototype.generateRoom
+//  rooms data will be pushed into array "rooms"
 
 
 var canvas_width = 1280;            // canvas w and h
@@ -7,13 +9,32 @@ var maxSplitLevel = 10;             // height of the BSP tree, determine the var
 
 //road setup 
 var road_color = [150, 150, 150];    // road rgb
-var road_stroke = 50;               // road stroke
+var road_stroke = 50;                // road stroke
 
 //room setup
 var room_color = [150, 150, 150];    // road rgb
 
 //borders
 var border_color = [255, 255, 255];  // road rgb
+
+//rooms control
+var rooms = new Array();             // create array
+
+//object that contains the information of each room, for quick draw
+/*    room_ID is reserved but not used, set to 0 by default
+      start_x, start_y are the starting point of 
+      room_width, room_height are the dimension of the room
+*/
+function array_addRoom(room_ID, start_x, start_y, room_width, room_height) {
+  this.room_ID = room_ID;
+  this.start_x = start_x;
+  this.start_y = start_y;
+  this.room_width = room_width;
+  this.room_height = room_height;
+}
+
+
+
 
 function setup() {
 
@@ -26,16 +47,31 @@ function setup() {
 
   var dungeon = generateDungeon(maxSplitLevel, minSize); // start dungeon generation
 
-
   rectMode(CORNERS);
   dungeon.drawBorders(); // draws the dividing lines
 
   dungeon.connectRooms(); // draws lines to connect rooms
   dungeon.generateRoom(); // generates and draws the rooms
+
+  //printout room data for debugging
+  printRoomData();
 }
 
 
+//function 
+//  print out data for debugging
+function printRoomData() {
+  for (var i = 0; i < rooms.length; i++) {
 
+    console.log("ID : " + rooms[i].room_ID);
+    console.log("start_x : " + rooms[i].start_x);
+    console.log("start_y : " + rooms[i].start_y);
+    console.log("room_width : " + rooms[i].room_width);
+    console.log("room_height : " + rooms[i].room_height);
+    console.log("");
+  }
+
+}
 
 
 
@@ -117,13 +153,19 @@ BSPNode.prototype.generateRoom = function () {
     var roomW = dx - random(dx / 8, dx / 2); // arbitrary      dx * 1/2   to   dx * 7/8    
     var roomH = dy - random(dy / 8, dy / 2); // arbitrary      same here
 
-    // console.log("dx " + dx + " dy " + dy);
-    // console.log("roomW " + roomW + " roomH " + roomH);
+
 
     var x = random(this.startPoint.x, this.endPoint.x - roomW);
     var y = random(this.startPoint.y, this.endPoint.y - roomH);
 
-    // console.log("x " + x + " y " + y);
+    //console.log("dx " + dx + " dy " + dy);
+    //console.log("roomW " + roomW + " roomH " + roomH);
+    //console.log("x " + x + " y " + y);
+
+
+    //add data into rooms array
+    rooms.push(new array_addRoom(0, x, y, roomW, roomH));
+
 
     rectMode(CORNER);
     noStroke();
