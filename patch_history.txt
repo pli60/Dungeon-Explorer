@@ -2,6 +2,7 @@
 7/14
 Added background assets
 Added random background to dungeon
+Tested adding water tile to rooms
 
 7/13 20:00
 Format the js files, and make tile works
