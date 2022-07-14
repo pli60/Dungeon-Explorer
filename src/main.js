@@ -28,7 +28,7 @@ function setup() {
 
 
   //test image
-  image(tile_water, 0, 0);
+  // image(tile_water, 0, 0);
 
 }
 
@@ -36,6 +36,7 @@ function setup() {
 function draw(){
   //run 60 times per second
 
+  // image(tile_water, 0, 0);
   
 }
 
