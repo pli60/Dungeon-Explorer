@@ -1,10 +1,6 @@
-// Note change function code 
 
-//tile variables
-let water;
-let road;
-let grass;
-
+//-------------------------------------------------------------
+//----------------------Global Variables-----------------------
 var canvas_width = 1280;            // canvas w and h
 var canvas_height = 720;
 
@@ -24,19 +20,19 @@ var border_color = [255, 255, 255];  // road rgb
 //rooms control
 var rooms = new Array();             // create array
 
+//----------------------Global End-----------------------------
+//-------------------------------------------------------------
+
+
+
+//----------------------Objects--------------------------------
+//-------------------------------------------------------------
+
 //object that contains the information of each room, for quick draw
 /*    room_ID is reserved but not used, set to 0 by default
       start_x, start_y are the starting point of 
       room_width, room_height are the dimension of the room
 */
-
-function preload(){
-  // water = loadImage('Water.jpg');
-  // road = loadImage('Road.jpg');
-  // grass = loadImage('Grass.jpg');
-
-}
-
 function array_addRoom(room_ID, start_x, start_y, room_width, room_height) {
   this.room_ID = room_ID;
   this.start_x = start_x;
@@ -44,6 +40,35 @@ function array_addRoom(room_ID, start_x, start_y, room_width, room_height) {
   this.room_width = room_width;
   this.room_height = room_height;
 }
+//----------------------Objects End----------------------------
+//-------------------------------------------------------------
+
+
+
+
+//----------------------Helper Function------------------------
+
+
+
+
+
+
+
+
+
+
+
+function preload(){
+  
+  tile_water = loadImage('assets/Water.png');
+  
+
+}
+
+
+
+
+
 
 
 
@@ -51,14 +76,6 @@ function array_addRoom(room_ID, start_x, start_y, room_width, room_height) {
 function setup() {
 
   createCanvas(canvas_width, canvas_height);
-
-  water = loadImage('Water.jpg');
-  road = loadImage('Road.jpg');
-  grass = loadImage('Grass.jpg');
-  // water.loadPixels();
-  // road.loadPixels();
-  // grass.loadPixels();
-
   background(0);
 
   //console.log("width = " + width + "  height = " + height);
@@ -74,12 +91,15 @@ function setup() {
 
   //printout room data for debugging
   printRoomData();
+
+  
+
 }
 
 
 function draw(){
   //run 60 times per second
-  image(water, 0, 0);
+  
 }
 
 //function 
