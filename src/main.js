@@ -26,6 +26,10 @@ function setup() {
   //printout room data for debugging
   printRoomData();
 
+
+  //test image
+  image(tile_water, 0, 0);
+
 }
 
 
