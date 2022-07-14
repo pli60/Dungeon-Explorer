@@ -1,3 +1,8 @@
+
+7/14
+Added background assets
+Added random background to dungeon
+
 7/13 20:00
 Format the js files, and make tile works
 fix the bug that random number that can be divided by 32
