@@ -21,10 +21,7 @@ function setup() {
   //dungeon.drawBorders(); // draws the dividing lines
   dungeon.connectRooms(); // draws lines to connect rooms
   dungeon.generateRoom(); // generates and draws the rooms
-
-
   Tile_generator();
-
   //debugging
   //printRoomData();
   //printRoomTileData();

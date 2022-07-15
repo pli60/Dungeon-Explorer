@@ -31,36 +31,91 @@ function Tile_preload() {
     tile_water = loadImage('./assets/Water.png');
     tile_grass = loadImage('./assets/Grass.png');
     tile_road = loadImage('./assets/Road.png');
+
+
+    //tile_wall = loadImage('./assets/Wall.png');
+}
+
+
+// helper function used in Tile_generator
+//       that draw a tile
+function Tile_drawATile(tileType, roomID, row, column, layer0, layer1, layer2) {
+    //draw layer0 if the tile hasn't been used yet
+    image(tileType, column * tilesize, row * tilesize);
+    //make two-d array 
+    rooms[roomID].tiles[row][column] = new array_addTile(row, column, layer0, layer1, layer2);
+    // console.log("room: " + rooms[roomID].room_ID + " row: " + rooms[roomID].tiles[row][column].tile_row + " column: " + rooms[roomID].tiles[row][column].tile_column
+    // + " type: " + rooms[roomID].tiles[row][column].layer_0);
 }
 
 
 // function that make tilesmap
 function Tile_generator() {
+
+
+    this.distance_row_to_topEdge = 0;
+    this.distance_row_to_bottomEdge = 0;
+    this.distance_column_to_leftEdge = 0;
+    this.distance_column_to_rightEdge = 0;
+
+
+
+    //for loop will setup array for drawing
+    //  crop the room into 32*32 tiles and store their information into array
+    //  draw the basic inner contents (the edge will be drawed over this layer)
     for (var i = 0; i < rooms.length; i++) {
+
 
         //draw assets based on the rows and columns
         for (var row = 0; row < rooms[i].tiles_row; row++) {
             for (var column = 0; column < rooms[i].tiles_column; column++) {
+
+
                 //seeds the tile generator
                 noiseSeed(seeds_noise);
-
                 //must push and pop before use translate 
                 push();
                 //translate the origin to start_x, start_y  (treat that point as 0, 0)
                 translate(rooms[i].start_x, rooms[i].start_y);
 
-                if (noise(row, column) > 0.5) {
-                    image(tile_water, row * tilesize, column * tilesize);
-                    rooms[i].tiles.push(new array_addTile(row, column, tileID_Water, tileID_None, tileID_None));
+                //detemine the how far the current tiles are from the edges
+                this.distance_row_to_topEdge = row - 0;
+                this.distance_row_to_bottomEdge = rooms[i].tiles_row - 1 - row;
+                this.distance_column_to_leftEdge = column - 0;
+                this.distance_column_to_rightEdge = rooms[i].tiles_column - 1 - column;
+
+                //find smallest distance
+                this.distanceArray = [this.distance_row_to_topEdge, this.distance_row_to_bottomEdge, this.distance_column_to_leftEdge, this.distance_column_to_rightEdge];
+                this.minDistance = Math.min.apply(Math, this.distanceArray);
+
+
+                //if the tile is closer to the edges, it's more likely will generate the edge
+                if (this.minDistance <= 1 && this.minDistance > 0) {
+                    if (noise(row, column) > 0.4) {
+                        Tile_drawATile(tile_water, i, row, column, tileID_Water, tileID_None, tileID_None);
+                    } else {
+                        Tile_drawATile(tile_grass, i, row, column, tileID_Grass, tileID_None, tileID_None);
+                    }
+                    //only make water tile if it's edge
+                } else if (this.minDistance == 0) {
+                    Tile_drawATile(tile_water, i, row, column, tileID_Water, tileID_None, tileID_None);
                 } else {
-                    image(tile_grass, row * tilesize, column * tilesize);
-                    rooms[i].tiles.push(new array_addTile(row, column, tileID_Grass, tileID_None, tileID_None));
+
+                    //other wise it will generate the ground 
+
+                    
+                    if (noise(row, column) > 0.75) {
+                        Tile_drawATile(tile_water, i, row, column, tileID_Water, tileID_None, tileID_None);
+                    } else {
+                        Tile_drawATile(tile_grass, i, row, column, tileID_Grass, tileID_None, tileID_None);
+                    }
+
                 }
                 pop();
                 seeds_noise += seeds_noise_increment;
-            }
-        }//for end
 
+            }
+        }
     }
 
 
@@ -72,6 +127,57 @@ function Tile_generator() {
 //          in other words : procedural generation 
 function Tile_fixer() {
 
+    /*
+    rule #1:   the ground won't be surrounded by the water 
+    */
+
+
+    for (var i = 0; i < rooms.length; i++) {
+        for (var row = 0; row < rooms[i].tiles_row; row++) {
+            for (var column = 0; column < rooms[i].tiles_column; column++) {
+
+                //must push and pop before use translate 
+                push();
+                //translate the origin to start_x, start_y  (treat that point as 0, 0)
+                translate(rooms[i].start_x, rooms[i].start_y);
+
+                //rule #1
+
+                var waterTileCount = 0;
+                var adj_row = 0;
+                var adj_column = 0;
+                
+                if (rooms[i].tiles[row][column].layer_0 == tileID_Grass) {
+
+
+                    //adj is used to check all adj tiles of the current tile
+                    for (var adj = 0; adj < 4; adj++) {
+
+                        adj_row = rooms[i].tiles[row][column].adjTile[adj].tile_row;
+                        adj_column = rooms[i].tiles[row][column].adjTile[adj].tile_column;
+
+                        if(rooms[i].tiles[adj_row][adj_column] != null){
+                        if (rooms[i].tiles[adj_row][adj_column].layer_0 == tileID_Water) {
+                            waterTileCount++;
+                        }
+                    }
+
+                    }// //adj check end
+
+                    if(waterTileCount == 4){
+                        Tile_drawATile(tile_water, i, row, column, tileID_Water, tileID_None, tileID_None);
+                    }
+                    waterTileCount = 0;
+
+                }//rule 1 end
+
+
+                pop();
+
+
+            }
+        }
+    }
 
 }
 
@@ -99,10 +205,10 @@ function printRoomData() {
 function printRoomTileData() {
     for (var i = 0; i < rooms.length; i++) {
         console.log("ID : " + rooms[i].room_ID);
-        
-        for(var j = 0; j < rooms[i].tiles.length ; j ++){
+
+        for (var j = 0; j < rooms[i].tiles.length; j++) {
             console.log("row: " + rooms[i].tiles[j].tile_row + " column: " + rooms[i].tiles[j].tile_column);
-            console.log( rooms[i].tiles[j].layer_0 +  " "  +  rooms[i].tiles[j].layer_1 + " " + rooms[i].tiles[j].layer_2)
+            console.log(rooms[i].tiles[j].layer_0 + " " + rooms[i].tiles[j].layer_1 + " " + rooms[i].tiles[j].layer_2)
         }
     }
 }
