@@ -1,4 +1,12 @@
 
+7/14 
+added tile generator
+made objects array to trace every tiles' infor (location + layer + tile type) in the same room
+fix assets problem
+add some basic rules for tiles layer 0
+
+
+
 7/14
 Added background assets
 Added random background to dungeon

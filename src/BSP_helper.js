@@ -1,3 +1,7 @@
+//don't need to code here
+//all elements should be able to access from out side
+//use rooms array to get coordinator
+
 
 function generateDungeon(maxSplitLevel, minRoomSize) {
   // sets starting conditions and calls respective functions for dungeon creation
@@ -34,9 +38,6 @@ function BSPNode(parentNode, startPoint, endPoint) {
     x: centerX,
     y: centerY
   };
-
-  //testing code to print out the center of each node
-  //print("center: " + this.centerPoint.x.toFixed() + ", " + this.centerPoint.y.toFixed());
 }
 
 
@@ -119,33 +120,13 @@ BSPNode.prototype.generateRoom = function () {
  
 
     //add data into rooms array
-    rooms.push(new array_addRoom(0, x, y, roomW, roomH));
-
-
+    rooms.push(new array_addRoom(room_ID, x, y, roomW, roomH));
+    room_ID++;
+    
     rectMode(CORNER);
     noStroke();
     fill(room_color);
     rect(x, y, roomW, roomH);
-    
-    
-    ellipseMode(CORNER);
-    fill("red");
-    ellipse(x + roomW / 4, y + roomH / 4, roomW / 2, roomH / 2);
-
-    for (let tiled_H = 0; tiled_H < 9; tiled_H++) {
-      for (let tiled_W = 0; tiled_W < 9; tiled_W++){
-        image(tile_water, x + tiled_W * 32, y + tiled_H * 32);
-      }
-    }
-    
-    
-    // image(water, x, y, 32, 32);
-
-    // save room specs (not yet used for anything :P)
-    this.roomX = x;
-    this.roomY = y;
-    this.roomW = roomW;
-    this.roomH = roomH;
   }
 }
 
