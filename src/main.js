@@ -10,7 +10,7 @@ function preload() {
 
 function setup() {
 
-  randomSeed(seeds);
+  //randomSeed(seeds);
 
   createCanvas(canvas_width, canvas_height);
   Background_setup();
