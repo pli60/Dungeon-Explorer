@@ -1,3 +1,7 @@
+7/15
+Added rock, flower, and bridge tiles
+Update generation for rock and flower
+
 
 7/14 
 added tile generator
@@ -6,11 +10,11 @@ fix assets problem
 add some basic rules for tiles layer 0
 
 
-
 7/14
 Added background assets
 Added random background to dungeon
 Tested adding water tile to rooms
+
 
 7/13 20:00
 Format the js files, and make tile works
