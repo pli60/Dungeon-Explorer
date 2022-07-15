@@ -31,7 +31,8 @@ function Tile_preload() {
     tile_water = loadImage('./assets/Water.png');
     tile_grass = loadImage('./assets/Grass.png');
     tile_road = loadImage('./assets/Road.png');
-
+    tile_flower = loadImage('./assets/Flower2.png');
+    tile_rock = loadImage('./assets/Rock2.png');
 
     //tile_wall = loadImage('./assets/Wall.png');
 }
@@ -96,18 +97,23 @@ function Tile_generator() {
                     } else {
                         Tile_drawATile(tile_grass, i, row, column, tileID_Grass, tileID_None, tileID_None);
                     }
-                    //only make water tile if it's edge
+                    //only spawn water tile if it's edge
                 } else if (this.minDistance == 0) {
                     Tile_drawATile(tile_water, i, row, column, tileID_Water, tileID_None, tileID_None);
                 } else {
 
                     //other wise it will generate the ground 
 
-                    
                     if (noise(row, column) > 0.75) {
                         Tile_drawATile(tile_water, i, row, column, tileID_Water, tileID_None, tileID_None);
                     } else {
-                        Tile_drawATile(tile_grass, i, row, column, tileID_Grass, tileID_None, tileID_None);
+                        if (noise(row, column) > 0.65) {
+                            Tile_drawATile(tile_flower, i, row, column, tileID_Flower, tileID_None, tileID_None);
+                        }else if (noise(row, column) > 0.6) {
+                            Tile_drawATile(tile_rock, i, row, column, tileID_Rock, tileID_None, tileID_None);
+                        }else {
+                            Tile_drawATile(tile_grass, i, row, column, tileID_Grass, tileID_None, tileID_None);
+                        }
                     }
 
                 }

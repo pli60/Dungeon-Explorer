@@ -35,6 +35,8 @@ var tileID_None = 000;
 var tileID_Grass = 001;
 var tileID_Water = 002;
 var tileID_Road = 003;
+var tileID_Flower = 011;
+var tileID_Rock = 012;
 
 //add tileID_     = 04 / 05   different layer 0 type 
 //                  011/012   add layer 1 to layer 0
