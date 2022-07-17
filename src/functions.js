@@ -98,7 +98,6 @@ function Tile_drawATile(tileType, roomID, row, column, layer0, layer1, layer2) {
     rooms[roomID].tiles[row][column] = new array_addTile(row, column, layer0, layer1, layer2);
     }else{
         //layer1 exist case, which means adding obj instead of adding background
-
         image(tileType, column * tilesize, row * tilesize);
         rooms[roomID].tiles[row][column] = new array_addTile(row, column, layer0, layer1, layer2);
     }
@@ -182,7 +181,6 @@ function Tile_generator() {
 
 
 
-
     Tile_fixer();
     Tile_fixer2();
 
@@ -195,8 +193,6 @@ function Tile_generator() {
 function AddObjects(){
     
     for (var i = 0; i < rooms.length; i++) {
-
-
         //draw assets based on the rows and columns
         for (var row = 0; row < rooms[i].tiles_row; row++) {
             for (var column = 0; column < rooms[i].tiles_column; column++) {
@@ -406,13 +402,9 @@ function Tile_fixer() {
                         }
                     }
 
-                    
-
+                
                 }//rule 2 end
-
                 pop();
-
-
             }
         }
     }
