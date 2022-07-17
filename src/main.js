@@ -10,7 +10,7 @@ function preload() {
 
 function setup() {
 
-  //randomSeed(seeds);
+  randomSeed(seeds);
 
   createCanvas(canvas_width, canvas_height);
   Background_setup();
@@ -19,7 +19,7 @@ function setup() {
 
   rectMode(CORNERS);
   //dungeon.drawBorders(); // draws the dividing lines
-  dungeon.connectRooms(); // draws lines to connect rooms
+  //dungeon.connectRooms(); // draws lines to connect rooms
   dungeon.generateRoom(); // generates and draws the rooms
   Tile_generator();
   //debugging

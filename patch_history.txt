@@ -1,3 +1,10 @@
+7/16
+modified Tile_drawATile function, now it can be used to add objects (second layer)
+changed background to the water
+added islands edges
+removed the the previous objects that have background
+added the objects that don't have background
+
 7/15
 Added rock, flower, and bridge tiles
 Update generation for rock and flower

@@ -4,8 +4,8 @@
 var canvas_width = 2560;            // canvas w and h
 var canvas_height = 1440;
 
-var minSize = canvas_width / 4;     // used to determine the min size of each room 
-var maxSplitLevel = 20;             // height of the BSP tree, determine the variety of the rooms
+var minSize = canvas_width / 2;     // used to determine the min size of each room 
+var maxSplitLevel = 10;             // height of the BSP tree, determine the variety of the rooms
 
 //seeds setup
 var seeds = 99;                     // change this once finish the program, right now make it constant for debugging
@@ -37,6 +37,32 @@ var tileID_Water = 002;
 var tileID_Road = 003;
 var tileID_Flower = 011;
 var tileID_Rock = 012;
+
+
+var tileID_overlap_top = 201;
+var tileID_overlap_down = 202;
+var tileID_overlap_right = 203;
+var tileID_overlap_left = 204;
+
+
+var tileID_overlap_topLeft = 211;
+var tileID_overlap_topRight = 212;
+var tileID_overlap_downLeft = 213;
+var tileID_overlap_downRight = 214;
+
+
+var tileID_island_top = 221;
+var tileID_island_down = 222;
+var tileID_island_left = 223;
+var tileID_island_right = 224;
+
+
+
+var tileID_island_conj_top = 231;
+var tileID_island_conj_down = 232;
+var tileID_island_conj_left = 233;
+var tileID_island_conj_right = 234;
+
 
 //add tileID_     = 04 / 05   different layer 0 type 
 //                  011/012   add layer 1 to layer 0
