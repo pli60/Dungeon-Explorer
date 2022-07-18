@@ -1,5 +1,5 @@
 7/18
-Add turtle, slimes, and frog. Update bridge.
+Add turtle, slimes, seagull, and frog. Update bridge.
 
 
 7/16
