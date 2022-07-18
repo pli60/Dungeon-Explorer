@@ -1,3 +1,7 @@
+7/18
+Add turtle, slimes, and frog. Update bridge.
+
+
 7/16
 modified Tile_drawATile function, now it can be used to add objects (second layer)
 changed background to the water
