@@ -52,15 +52,39 @@ BSPNode.prototype.connectRooms = function () {
     this.leftNode.connectRooms();
   }
 
-  stroke(road_color);
-  strokeWeight(road_stroke);
+  // stroke(road_color);
+  // strokeWeight(road_stroke);
 
   if (this.parentNode) {
-    //this part need to change to tile if we want to make tilemap
-    line(this.parentNode.leftNode.centerPoint.x,
-      this.parentNode.leftNode.centerPoint.y,
-      this.parentNode.rightNode.centerPoint.x,
-      this.parentNode.rightNode.centerPoint.y);
+
+    var draw_startColumn = parseInt(this.parentNode.leftNode.centerPoint.x/32);
+    var draw_startRow = parseInt(this.parentNode.leftNode.centerPoint.y/32);
+    var draw_length = parseInt( (this.parentNode.rightNode.centerPoint.x - this.parentNode.leftNode.centerPoint.x) /32);
+    var draw_height = parseInt( (this.parentNode.rightNode.centerPoint.y - this.parentNode.leftNode.centerPoint.y) /32);
+
+
+    if(draw_height <= 1){
+      draw_height = 1;
+    }
+    if(draw_length <= 1){
+      draw_length = 1;
+    }
+
+    draw_bridge(draw_startRow, draw_startColumn, draw_length, draw_height);
+
+
+
+
+    // stroke(road_color);
+    // strokeWeight(road_stroke);
+
+    // line(this.parentNode.leftNode.centerPoint.x,
+    //   this.parentNode.leftNode.centerPoint.y,
+    //   this.parentNode.rightNode.centerPoint.x,
+    //   this.parentNode.rightNode.centerPoint.y);
+  
+
+
   }
 }
 
@@ -129,31 +153,6 @@ BSPNode.prototype.generateRoom = function () {
     rect(x, y, roomW, roomH);
   }
 }
-
-//function
-//  draw border between every rooms
-BSPNode.prototype.drawBorders = function () {
-
-  // the part I think It will be better if I removed it
-
-
-  // draws the borders between nodes
-  // noFill();
-  // stroke(border_color);
-  // strokeWeight(2);
-  // rect(this.startPoint.x, this.startPoint.y, this.endPoint.x, this.endPoint.y);
-
-  // // recursively call for other nodes
-  // if (this.leftNode) {
-  //   this.leftNode.drawBorders();
-  // }
-  // if (this.rightNode) {
-  //   this.rightNode.drawBorders();
-  // }
-}
-
-
-
 
 
 //warning the following helper function shouldn't be changed

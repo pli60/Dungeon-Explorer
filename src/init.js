@@ -1,10 +1,9 @@
 
 //-------------------------------------------------------------
 //----------------------Global Variables-----------------------
-var canvas_width = 2560;            // canvas w and h
-var canvas_height = 1440;
-
-var minSize = canvas_width / 2;     // used to determine the min size of each room 
+var canvas_width = 1280 * 2;            // canvas w and h
+var canvas_height = 768 * 2;
+// var minSize = canvas_width / 3;      // used to determine the min size of each room 
 var maxSplitLevel = 10;             // height of the BSP tree, determine the variety of the rooms
 
 //seeds setup
@@ -25,7 +24,8 @@ var border_color = [255, 255, 255];  // road rgb
 
 
 //rooms control
-var room_canvas = [];                      // room of entire canvas
+var room_canvas = [];                 // room of entire canvas, accessable for all purpose
+//warning don't call room in any other function expect the tile_generator
 var rooms = [];                       // create array
 
 
@@ -36,12 +36,16 @@ var tilesize = 32;                    //tile size should be 32  *  32
 var tileID_None = 000;
 var tileID_Grass = 001;
 var tileID_Water = 002;
-var tileID_Road = 003;
+var tileID_Bridge = 003;
 
 var tileID_Flower = 011;
 var tileID_Rock = 012;
 var tileID_frog = 013;
 var tileID_turtle = 014;
+var tileID_turtle2 = 0141;
+
+var tileID_greenSlime = 015;
+var tileID_redSlime = 0151;
 
 
 
