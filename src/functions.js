@@ -14,22 +14,17 @@ function Background_preload() {
 
 
 function Background_setup() {
-    // let backg = [bg1, bg2, bg3, bg4, bg5];
-    // bg = random(backg);
-    // background(bg);
 
-    //fill back ground with the deep water
+    room_canvas.push(new array_addRoom(0, 0, 0, canvas_width, canvas_height));
+
+
     for (var row = 0; row < canvas_height / tilesize; row++) {
-        for (var column = 0; column < canvas_width / tilesize; column++) {
-            image(tile_waterBC, column * tilesize, row * tilesize);
-        }
-
-
+      for (var column = 0; column < canvas_width / tilesize; column++) {
+          image(tile_waterBC, column * tilesize, row * tilesize);
+          room_canvas[0].tiles[row][column] = new array_addTile(row, column, tileID_Water, tileID_None, tileID_None);
+      }
+  
     }
-
-
-
-
 
 }
 
@@ -52,6 +47,9 @@ function Tile_preload() {
 
     tile_flower = loadImage('./assets/Flower.png');
     tile_rock = loadImage('./assets/Rock.png');
+    tile_frog = loadImage('./assets/Frog.png');
+    tile_turtle = loadImage('./assets/Turtle.png');
+
 
 
     tile_None = loadImage('./assets/None.png');
@@ -79,6 +77,11 @@ function Tile_preload() {
     tile_overlap_downLeft = loadImage('./assets/overlap/overlap_downLeft.png');
     tile_overlap_downRight = loadImage('./assets/overlap/overlap_downRight.png');
 
+    tile_cross_topBot = loadImage('./assets/overlap/cross_topBot.png');
+    tile_cross_leftRight = loadImage('./assets/overlap/cross_leftRight.png');
+
+
+
 
 
 
@@ -91,19 +94,33 @@ function Tile_preload() {
 // helper function used in Tile_generator
 //       that draw a tile
 function Tile_drawATile(tileType, roomID, row, column, layer0, layer1, layer2) {
+    var actual_row;
+    var actual_column;
+
+    actual_row = (rooms[roomID].start_x + column * tilesize) / tilesize;
+    actual_column = (rooms[roomID].start_y + row * tilesize) / tilesize;
+
     //draw layer0 if the tile hasn't been used yet
     if(layer1 == tileID_None){
     image(tileType, column * tilesize, row * tilesize);
     //make two-d array 
     rooms[roomID].tiles[row][column] = new array_addTile(row, column, layer0, layer1, layer2);
+
+
+
+    }else if(layer1 == tileID_turtle){
+        image(tileType, column * tilesize, row * tilesize);
+        rooms[roomID].tiles[row][column] = new array_addTile(row, column, layer0, layer1, layer2);
+        rooms[roomID].tiles[row][column + 1] = new array_addTile(row, column + 1, layer0, layer1, layer2);
+
+
     }else{
         //layer1 exist case, which means adding obj instead of adding background
         image(tileType, column * tilesize, row * tilesize);
         rooms[roomID].tiles[row][column] = new array_addTile(row, column, layer0, layer1, layer2);
-    }
-    
-}
 
+    }
+}
 
 // function that make tilesmap
 function Tile_generator() {
@@ -183,6 +200,7 @@ function Tile_generator() {
 
     Tile_fixer();
     Tile_fixer2();
+    Tile_fixer3();
 
 
     AddObjects();
@@ -209,7 +227,7 @@ function AddObjects(){
                 if (rooms[i].tiles[row][column].layer_0 == tileID_Grass) {
 
 
-                    var grassTileCount = 0;
+                var grassTileCount = 0;
                 var adj_row = 0;
                 var adj_column = 0;
                 //check if it's inner ground, the grass is inside not the edge
@@ -235,12 +253,34 @@ function AddObjects(){
                             Tile_drawATile(tile_flower, i, row, column, tileID_Grass, tileID_Flower, tileID_None);
                          }else if (noise(row, column) <= 0.4 && noise(row, column) > 0.36){
                             Tile_drawATile(tile_rock, i, row, column, tileID_Grass, tileID_Rock, tileID_None);        
+                         }else if (noise(row, column) <= 0.33 && noise(row, column) > 0.3){
+                            Tile_drawATile(tile_frog, i, row, column, tileID_Grass, tileID_frog, tileID_None); 
                          }
                     }
 
                 }
-            }
+            }//grass add obj end
 
+            if(rooms[i].tiles[row][column].layer_0 == tileID_Water){
+
+                adj = 3;
+                adj_row3 = rooms[i].tiles[row][column].adjTile[adj].tile_row;
+                adj_column3 = rooms[i].tiles[row][column].adjTile[adj].tile_column;
+
+
+
+                if(rooms[i].tiles[adj_row3][adj_column3] != null){
+                    if(rooms[i].tiles[adj_row3][adj_column3].layer_0 == tileID_Water && rooms[i].tiles[row][column].layer_1 != tileID_turtle){
+
+                        if(noise(row, column) <  1 && noise(row, column) > 0.75){
+                            Tile_drawATile(tile_turtle, i, row, column, tileID_Water, tileID_turtle, tileID_None);
+                        }
+                            
+
+                    }
+                }
+
+            }
 
                 pop();
                 seeds_noise += seeds_noise_increment;
@@ -439,7 +479,6 @@ function  Tile_fixer2(){
 
                 if(rooms[i].tiles[row][column].layer_0 == tileID_island_top){
 
-  
                     //fine the tile below
                     adj = 1;
                     adj_row = rooms[i].tiles[row][column].adjTile[adj].tile_row;
@@ -467,6 +506,74 @@ function  Tile_fixer2(){
                 }else{
 
                 }//rule 2+ end
+
+                pop();
+            }
+        }
+    }
+
+
+
+}
+
+
+
+// function that contains rule that fix the tile against the logic, but it will process after the fixer1
+//          in other words : procedural generation +
+function  Tile_fixer3(){
+
+
+    //    rule #2++:   the water next to the ground will show the overlapping 
+    //             process in 2: make connection between island tile and ground
+    for (var i = 0; i < rooms.length; i++) {
+        for (var row = 0; row < rooms[i].tiles_row; row++) {
+            for (var column = 0; column < rooms[i].tiles_column; column++) {
+
+                //must push and pop before use translate 
+                push();
+                //translate the origin to start_x, start_y  (treat that point as 0, 0)
+                translate(rooms[i].start_x, rooms[i].start_y);
+
+                adj = 0;
+                adj_row0 = rooms[i].tiles[row][column].adjTile[adj].tile_row;
+                adj_column0 = rooms[i].tiles[row][column].adjTile[adj].tile_column;
+                adj = 1;
+                adj_row1 = rooms[i].tiles[row][column].adjTile[adj].tile_row;
+                adj_column1 = rooms[i].tiles[row][column].adjTile[adj].tile_column;
+                adj = 2;
+                adj_row2 = rooms[i].tiles[row][column].adjTile[adj].tile_row;
+                adj_column2 = rooms[i].tiles[row][column].adjTile[adj].tile_column;
+                adj = 3;
+                adj_row3 = rooms[i].tiles[row][column].adjTile[adj].tile_row;
+                adj_column3 = rooms[i].tiles[row][column].adjTile[adj].tile_column;
+
+
+                //fix cross issue
+                if(rooms[i].tiles[row][column].layer_0 == tileID_Grass){
+                    if(rooms[i].tiles[adj_row0][adj_column0].layer_0 == tileID_overlap_right || rooms[i].tiles[adj_row0][adj_column0].layer_0 == tileID_overlap_topRight){
+                        if(rooms[i].tiles[adj_row1][adj_column1].layer_0 == tileID_overlap_left || rooms[i].tiles[adj_row1][adj_column1].layer_0 == tileID_overlap_downLeft ){
+                            if(rooms[i].tiles[adj_row2][adj_column2].layer_0 == tileID_overlap_down || rooms[i].tiles[adj_row2][adj_column2].layer_0 == tileID_overlap_downLeft ){
+                                if(rooms[i].tiles[adj_row3][adj_column3].layer_0 == tileID_overlap_top || rooms[i].tiles[adj_row3][adj_column3].layer_0 == tileID_overlap_topRight ){
+                                    Tile_drawATile(tile_cross_topBot, i, row, column, tileID_cross_topBot, tileID_None, tileID_None);    
+                                }
+                            }
+                        }
+                    }
+
+
+                    if(rooms[i].tiles[adj_row0][adj_column0].layer_0 == tileID_overlap_left || rooms[i].tiles[adj_row0][adj_column0].layer_0 == tileID_overlap_topLeft){
+                        if(rooms[i].tiles[adj_row1][adj_column1].layer_0 == tileID_overlap_right || rooms[i].tiles[adj_row1][adj_column1].layer_0 == tileID_overlap_downRight ){
+                            if(rooms[i].tiles[adj_row2][adj_column2].layer_0 == tileID_overlap_top || rooms[i].tiles[adj_row2][adj_column2].layer_0 == tileID_overlap_topLeft ){
+                                if(rooms[i].tiles[adj_row3][adj_column3].layer_0 == tileID_overlap_down || rooms[i].tiles[adj_row3][adj_column3].layer_0 == tileID_overlap_downRight ){
+                                    Tile_drawATile(tile_cross_leftRight, i, row, column, tileID_cross_leftRight, tileID_None, tileID_None);    
+                                }
+                            }
+                        }
+                    }
+                }
+                
+
+                
 
                 pop();
             }

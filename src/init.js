@@ -25,7 +25,9 @@ var border_color = [255, 255, 255];  // road rgb
 
 
 //rooms control
+var room_canvas = [];                      // room of entire canvas
 var rooms = [];                       // create array
+
 
 //tiles
 var tilesize = 32;                    //tile size should be 32  *  32
@@ -35,8 +37,12 @@ var tileID_None = 000;
 var tileID_Grass = 001;
 var tileID_Water = 002;
 var tileID_Road = 003;
+
 var tileID_Flower = 011;
 var tileID_Rock = 012;
+var tileID_frog = 013;
+var tileID_turtle = 014;
+
 
 
 var tileID_overlap_top = 201;
@@ -62,6 +68,10 @@ var tileID_island_conj_top = 231;
 var tileID_island_conj_down = 232;
 var tileID_island_conj_left = 233;
 var tileID_island_conj_right = 234;
+
+
+var tileID_cross_leftRight = 240;
+var tileID_cross_topBot = 241;
 
 
 //add tileID_     = 04 / 05   different layer 0 type 

@@ -13,6 +13,10 @@ function setup() {
   randomSeed(seeds);
 
   createCanvas(canvas_width, canvas_height);
+
+
+
+
   Background_setup();
 
   var dungeon = generateDungeon(maxSplitLevel, minSize); // start dungeon generation
@@ -25,6 +29,10 @@ function setup() {
   //debugging
   //printRoomData();
   //printRoomTileData();
+
+
+
+
 
 }
 
