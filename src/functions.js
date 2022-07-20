@@ -11,8 +11,6 @@ function Background_preload() {
 function Background_setup() {
 
     room_canvas.push(new array_addRoom(0, 0, 0, canvas_width, canvas_height));
-
-
     for (var row = 0; row < canvas_height / tilesize; row++) {
         for (var column = 0; column < canvas_width / tilesize; column++) {
             image(tile_waterBC, column * tilesize, row * tilesize);
