@@ -71,7 +71,10 @@ function Tile_preload() {
     tile_flower = loadImage('./assets/Flower.png');
     tile_rock = loadImage('./assets/Rock.png');
     tile_frog = loadImage('./assets/Frog.png');
+
     tile_turtle = loadImage('./assets/Turtle.png');
+    tile_turtle1 = loadImage('./assets/Turtle1.png');
+    tile_turtle2 = loadImage('./assets/Turtle2.png');
 
 
     tile_slime1 = loadImage('./assets/interaction/Greenslime.png');
@@ -687,8 +690,13 @@ function mouseClicked() {
 
 
         }
+    }else if(room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_greenSlime){
+        image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
+        room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_redSlime);
+    }else if(room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_redSlime){
+        //image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
+        room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_None);
     }
-
 
 
     //image(tileType, column * tilesize, row * tilesize);
