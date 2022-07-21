@@ -1,68 +1,9 @@
-//=============================================================
-//========================Background===========================
 
-// function that preload the background
-function Background_preload() {
+//=============================================================
+//==========================Preload============================
+function all_preload() {
     tile_waterBC = loadImage('./assets/Water.png');
     tile_bridge = loadImage('./assets/Bridge.png');
-}
-
-
-function Background_setup() {
-
-    room_canvas.push(new array_addRoom(0, 0, 0, canvas_width, canvas_height));
-    for (var row = 0; row < canvas_height / tilesize; row++) {
-        for (var column = 0; column < canvas_width / tilesize; column++) {
-            image(tile_waterBC, column * tilesize, row * tilesize);
-            room_canvas[0].tiles[row][column] = new array_addTile(row, column, tileID_Water, tileID_None, tileID_None);
-
-        }
-
-    }
-
-
-}
-
-
-function draw_bridge(draw_startRow, draw_startColumn, draw_length, draw_height){
-
-
-
-
-     for(var row = draw_startRow;  row < draw_startRow + draw_height; row++){
-         for(var column = draw_startColumn;  column < draw_startColumn + draw_length; column++){
-
-
-            if(room_canvas[0].tiles[row][column].layer_0 == tileID_Water && room_canvas[0].tiles[row][column].layer_1 != tileID_turtle &&
-                room_canvas[0].tiles[row][column].layer_1 != tileID_turtle2){
-
-
-             image(tile_bridge, column * tilesize, row * tilesize);
-             room_canvas[0].tiles[row][column] = new array_addTile(row, column, tileID_Bridge, tileID_None, tileID_None);
-
-            }
-        }
-     }
-  
-
-
-
-}
-
-//====================Background End===========================
-//=============================================================
-
-
-
-
-
-
-//=============================================================
-//===========================Tile==============================
-
-// function preload every tile
-function Tile_preload() {
-
     tile_water = loadImage('./assets/Water.png');
     tile_grass = loadImage('./assets/Grass.png');
     tile_road = loadImage('./assets/Road.png');
@@ -110,15 +51,104 @@ function Tile_preload() {
     tile_cross_leftRight = loadImage('./assets/overlap/cross_leftRight.png');
 
 
+    life_seagull = loadImage('./assets/sprite/SeagullSheet.png');
+    life_seagull_json = loadJSON('./assets/sprite/json/Seagull.json');
 
-
-
-
-
-
-    //tile_wall = loadImage('./assets/Wall.png');
 }
 
+
+
+//=======================Preload End===========================
+//=============================================================
+
+
+//=============================================================
+//========================Background===========================
+
+
+
+function Background_setup() {
+
+    room_canvas.push(new array_addRoom(0, 0, 0, canvas_width, canvas_height));
+    for (var row = 0; row < canvas_height / tilesize; row++) {
+        for (var column = 0; column < canvas_width / tilesize; column++) {
+            image(tile_waterBC, column * tilesize, row * tilesize);
+            room_canvas[0].tiles[row][column] = new array_addTile(row, column, tileID_Water, tileID_None, tileID_None);
+
+        }
+
+    }
+
+
+}
+
+
+function draw_bridge(draw_startRow, draw_startColumn, draw_length, draw_height) {
+
+
+
+
+    for (var row = draw_startRow; row < draw_startRow + draw_height; row++) {
+        for (var column = draw_startColumn; column < draw_startColumn + draw_length; column++) {
+
+
+            if (room_canvas[0].tiles[row][column].layer_0 == tileID_Water && room_canvas[0].tiles[row][column].layer_1 != tileID_turtle &&
+                room_canvas[0].tiles[row][column].layer_1 != tileID_turtle2) {
+
+
+                image(tile_bridge, column * tilesize, row * tilesize);
+                room_canvas[0].tiles[row][column] = new array_addTile(row, column, tileID_Bridge, tileID_None, tileID_None);
+
+            }
+        }
+    }
+
+
+
+
+}
+
+//====================Background End===========================
+//=============================================================
+
+
+
+
+
+
+//=============================================================
+//======================= Seagulls ============================
+function seagull_setup() {
+
+    let frames = life_seagull_json.frames;
+    for (var i = 0; i < frames.length; i++) {
+        let pos = frames[i].position;
+        let img = life_seagull.get(pos.x, pos.y, pos.w, pos.h);
+        animation.push(img);
+    }
+
+
+    seagulls_amount = random(40, 50);
+    let seagulls_speedX = random(0.3, 0.7)
+    let seagulls_speedY = random(0.3, 0.7)
+
+
+
+    for (var i = 0; i < seagulls_amount; i++) {
+        seagulls[i] = new array_addSeagull(animation, random(50, canvas_width), random(50, canvas_height), seagulls_speedX, seagulls_speedY);
+    }
+
+
+}
+//=====================Seagulls end============================
+//=============================================================
+
+
+
+
+
+//=============================================================
+//===========================Tile==============================
 
 // helper function used in Tile_generator
 //       that draw a tile
@@ -690,10 +720,10 @@ function mouseClicked() {
 
 
         }
-    }else if(room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_greenSlime){
+    } else if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_greenSlime) {
         image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
         room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_redSlime);
-    }else if(room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_redSlime){
+    } else if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_redSlime) {
         //image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
         room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_None);
     }

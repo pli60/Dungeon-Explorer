@@ -1,3 +1,6 @@
+7/20 patch 1.2
+seagull added
+
 7/19   1.1
 change the framework of the draw, now it's compatible for all animation
 
