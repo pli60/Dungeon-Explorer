@@ -670,66 +670,71 @@ function mouseClicked() {
     // text("(" + parseInt(mouseY / 32) + ", " + parseInt(mouseX / 32) + ")", mouseX, mouseY);
 
 
-    var check_flag = random(0, 10);
 
-    var tile_addRow = parseInt(mouseY / 32);
-    var tile_addColumn = parseInt(mouseX / 32);
-    var current_layer0 = room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_0;
-    var current_layer1 = room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_1;
+    if (mouseY <= canvas_height && mouseX <= canvas_width) {
 
 
-    //add slime when layer 2 is not used, add red slime if it's around frog
-    if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_None) {
+        var check_flag = random(0, 10);
 
-        if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_0 == tileID_Grass) {
-
-            //frog and rock tile won't be used 
-            if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_1 != tileID_Rock && room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_1 != tileID_frog) {
-
-
-                //adj frog will be redslime
-                if (room_canvas[0].tiles[tile_addRow - 1][tile_addColumn].layer_1 == tileID_frog ||
-                    room_canvas[0].tiles[tile_addRow - 1][tile_addColumn + 1].layer_1 == tileID_frog ||
-                    room_canvas[0].tiles[tile_addRow - 1][tile_addColumn - 1].layer_1 == tileID_frog ||
-                    room_canvas[0].tiles[tile_addRow][tile_addColumn + 1].layer_1 == tileID_frog ||
-                    room_canvas[0].tiles[tile_addRow][tile_addColumn - 1].layer_1 == tileID_frog ||
-                    room_canvas[0].tiles[tile_addRow + 1][tile_addColumn].layer_1 == tileID_frog ||
-                    room_canvas[0].tiles[tile_addRow + 1][tile_addColumn + 1].layer_1 == tileID_frog ||
-                    room_canvas[0].tiles[tile_addRow + 1][tile_addColumn - 1].layer_1 == tileID_frog
-                ) {
-                    image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
-                    room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_redSlime);
-
-                } else {
+        var tile_addRow = parseInt(mouseY / 32);
+        var tile_addColumn = parseInt(mouseX / 32);
+        var current_layer0 = room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_0;
+        var current_layer1 = room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_1;
 
 
+        //add slime when layer 2 is not used, add red slime if it's around frog
+        if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_None) {
 
-                    if (check_flag > 1) {
-                        image(tile_slime1, tile_addColumn * tilesize, tile_addRow * tilesize);
-                        room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_greenSlime);
-                    } else {
+            if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_0 == tileID_Grass) {
+
+                //frog and rock tile won't be used 
+                if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_1 != tileID_Rock && room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_1 != tileID_frog) {
+
+
+                    //adj frog will be redslime
+                    if (room_canvas[0].tiles[tile_addRow - 1][tile_addColumn].layer_1 == tileID_frog ||
+                        room_canvas[0].tiles[tile_addRow - 1][tile_addColumn + 1].layer_1 == tileID_frog ||
+                        room_canvas[0].tiles[tile_addRow - 1][tile_addColumn - 1].layer_1 == tileID_frog ||
+                        room_canvas[0].tiles[tile_addRow][tile_addColumn + 1].layer_1 == tileID_frog ||
+                        room_canvas[0].tiles[tile_addRow][tile_addColumn - 1].layer_1 == tileID_frog ||
+                        room_canvas[0].tiles[tile_addRow + 1][tile_addColumn].layer_1 == tileID_frog ||
+                        room_canvas[0].tiles[tile_addRow + 1][tile_addColumn + 1].layer_1 == tileID_frog ||
+                        room_canvas[0].tiles[tile_addRow + 1][tile_addColumn - 1].layer_1 == tileID_frog
+                    ) {
                         image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
                         room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_redSlime);
+
+                    } else {
+
+
+
+                        if (check_flag > 1) {
+                            image(tile_slime1, tile_addColumn * tilesize, tile_addRow * tilesize);
+                            room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_greenSlime);
+                        } else {
+                            image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
+                            room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_redSlime);
+                        }
                     }
+
+
                 }
 
 
+
+
             }
-
-
-
-
+        } else if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_greenSlime) {
+            image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
+            room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_redSlime);
+        } else if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_redSlime) {
+            //image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
+            room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_None);
         }
-    } else if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_greenSlime) {
-        image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
-        room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_redSlime);
-    } else if (room_canvas[0].tiles[tile_addRow][tile_addColumn].layer_2 == tileID_redSlime) {
-        //image(tile_slime2, tile_addColumn * tilesize, tile_addRow * tilesize);
-        room_canvas[0].tiles[tile_addRow][tile_addColumn] = new array_addTile(tile_addRow, tile_addColumn, current_layer0, current_layer1, tileID_None);
+
+
+        //image(tileType, column * tilesize, row * tilesize);
     }
-
-
-    //image(tileType, column * tilesize, row * tilesize);
 
 
 }
